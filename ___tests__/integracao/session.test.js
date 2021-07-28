@@ -1,18 +1,31 @@
-const {User} = require("../../src/app/models");
+const request = require('supertest');
+
+const app = require('../../src/app')
+const {User} = require('../../src/app/models');
+const truncate = require('../utils/truncate');
 
 describe('Teste de autenticação', () => {
-    it('Should be login', async () => {
+    beforeEach(async () => {
+        await truncate();
+
+    });
+
+    it('Should autenticate with valid credentials', async () => {
         const user = await User.create({
             name: 'Igor',
             email: 'igor.federizi@gmail.com',
-            password: '123456'
+            password_hash: '123456'
 
         });
 
-        console.log(user);
+        const response = await request(app)
+            .post("/sessions")
+            .send({
+            email: user.email,
+            password: "123456"
+        });
 
-        expect(user.email).toBe('igor.federizi@gmail.com');
-
+        expect(response.status).toBe(200);
 
     })
 
