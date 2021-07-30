@@ -3,14 +3,7 @@ const SessionController = require('./app/controllers/sessionController');
 
 
 
-routes.post('/sessions', (req, res) => {
-
-
-
-
-
-
-})
+routes.post('/sessions', SessionController.store);
 
 
 
